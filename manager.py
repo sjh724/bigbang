@@ -1,7 +1,9 @@
+import os
 from flask import Flask, request, render_template
 from wtforms import Form, StringField, validators
 
 from bigbang import MysqlBruter, FtpBruter, SshBruter
+from config import APP_STATIC_TXT
 
 app = Flask(__name__)
 

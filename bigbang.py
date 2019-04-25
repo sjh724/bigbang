@@ -1,5 +1,3 @@
-__author__ = 'reber'
-
 import queue
 import socket
 import threading
@@ -7,10 +5,14 @@ import time
 from ftplib import FTP
 
 import MySQLdb
+import os
 import paramiko
 
 
 # SSH爆破
+from config import APP_STATIC_TXT
+
+
 class SshBruter():
     """docstring for SshBruter"""
 
@@ -48,7 +50,7 @@ class SshBruter():
                     ssh.close()
                     s = "[OK] %s:%s" % (name, pwd)
                     print(s)
-                    self.result.append({"name": name, "password": pwd})
+                    self.result.append({"username": name, "password": pwd})
                 except socket.timeout:
                     self.show_log(self.host, "Timeout...")
                     self.qlist.put(name + ':' + pwd)
@@ -196,9 +198,9 @@ class MysqlBruter():
         print(self.host, self.userfile, self.passfile, self.threadnum)
 
     def get_queue(self):
-        with open(self.userfile, 'r') as f:
+        with open(os.path.join(APP_STATIC_TXT, self.userfile)) as f:
             ulines = f.readlines()
-        with open(self.passfile, 'r') as f:
+        with open(os.path.join(APP_STATIC_TXT, self.passfile)) as f:
             plines = f.readlines()
 
         for name in ulines:
@@ -217,7 +219,7 @@ class MysqlBruter():
                     conn.close()
                 s = "[OK] %s:%s" % (name, pwd)
                 print(s)
-                self.result.append({"name": name, "password": pwd})
+                self.result.append({"username": name, "password": pwd})
             except socket.timeout:
                 self.show_log(self.host, "Timeout")
                 self.qlist.put(name + ':' + pwd)
@@ -257,7 +259,7 @@ class MysqlBruter():
             self.is_exit = True
             print("Exit the program...")
         print("Waiting...")
-        time.sleep(5)
+
 
         self.show_result(self.host, self.result)
         finishetime = time.time()
