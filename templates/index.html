@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+<div align="center" >
+    <h2>User Management</h2>
+    {% if message %} {{ message }} {% endif %}
+    <form method="POST">
+        地址:{{ form.host }}
+        <br>
+        类型:{{ form.type }}
+        <br>
+        <input class="submit" type="submit" value="Submit">
+    </form>
+</div>
+</body>
+</html>
+
+<style>
+    .submit { background: #ffffff}
+</style>
