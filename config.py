@@ -7,29 +7,31 @@ APP_STATIC_TXT = os.path.join(APP_ROOT, 'static/txt')
 class config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'this is a secret string'
     SQLALCHEMY_TRACK_MODIFICATIONS = True
+    CACHE_TYPE = 'simple'
 
-    @staticmethod
-    def init_app(app):
-        pass
-
-
-class DevelopmentConfig(config):
-    DEBUG = True
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:root@localhost:3306/db_flask"
+    # @staticmethod
+    # def init_app(app):
+    #     pass
 
 
-class TestingConfig(config):
-    TESTING = True
-    SQLALCHEMY_DATABASE_URI = ""
-
-
-class ProductionConfig(config):
-    SQLALCHEMY_DATABASE_URI = ""
-
-
-config = {
-    'development': DevelopmentConfig,
-    'testing': TestingConfig,
-    'production': ProductionConfig,
-    'default': DevelopmentConfig
-}
+# class DevelopmentConfig(config):
+#     DEBUG = True
+#     CACHE_TYPE = 'simple'
+#     SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:root@localhost:3306/db_flask"
+#
+#
+# class TestingConfig(config):
+#     TESTING = True
+#     SQLALCHEMY_DATABASE_URI = ""
+#
+#
+# class ProductionConfig(config):
+#     SQLALCHEMY_DATABASE_URI = ""
+#
+#
+# config = {
+#     'development': DevelopmentConfig,
+#     'testing': TestingConfig,
+#     'production': ProductionConfig,
+#     'default': DevelopmentConfig
+# }

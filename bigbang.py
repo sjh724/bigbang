@@ -223,7 +223,7 @@ class MysqlBruter():
             except socket.timeout:
                 self.show_log(self.host, "Timeout")
                 self.qlist.put(name + ':' + pwd)
-                time.sleep(3)
+                time.sleep(1)
             except Exception as e:
                 error = "[Error] %s:%s" % (name, pwd)
                 print(error)
