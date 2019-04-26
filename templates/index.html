@@ -5,8 +5,10 @@
     <title>Document</title>
 </head>
 <body background="static/image/background.jpg">
-<div align="center" class="home">
-    <h2>Big Ban</h2>
+<div align="center" class="box">
+    <div id="header">
+        <h1>弱口令爆破系统</h1>
+    </div>
     {% if message %} {{ message }} {% endif %}
     <form method="POST" class="form">
         地 &nbsp;&nbsp;&nbsp;址:{{ form.host }}
@@ -15,15 +17,32 @@
         <br>
         <input class="submit" type="submit" value="Submit">
     </form>
+     {% if username %} 账号：{{ password }} {% endif %}
+     {% if password %} 密码：{{ password }} {% endif %}
 </div>
 </body>
 </html>
 
 <style>
-    .home {
-        margin: 200px;
-        font-family: Verdana, sans-serif;
-        line-height: 250%;
+     .box {
+        position: relative;
+        height:350px;
+        top: 400px;
+        left: 0;
+        z-index: 200;
+        right: 0;
+        width: 500px;
+        color: #666;
+        border-radius: 3px;
+        background: ;
+        margin: auto auto 100px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+        overflow: hidden;
+    }
+    #header {
+    position: relative;
+    height: 100px;
+    width: 100%;
     }
     .form-br {
         height: 20px;
@@ -32,12 +51,12 @@
         padding: 12px;
         border: black;
         margin:4px 0; border:0;
-
     }
     .form {
+        line-height: 50px;
         margin: fill;
         padding: 12px;
         border: black;
     }
-    .submit { background: aquamarine}
+    .submit { background: pink}
 </style>

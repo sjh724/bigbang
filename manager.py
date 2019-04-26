@@ -18,7 +18,7 @@ def login():
     myForm = LoginForm(request.form)
     print(request.method)
     if request.method == 'POST':
-        message = "Success"
+        message = "爆破成功"
         if myForm.host.data and myForm.type.data and myForm.validate():
             host = myForm.host.data
             type = myForm.type.data
@@ -28,27 +28,30 @@ def login():
                 if type == 'mysql':
                     mysql = MysqlBruter(host, ufile, pfile)
                     results = mysql.run()
-                    username = results[0].get("username")
-                    password = results[0].get("password")
+                    if results:
+                        username = results[0].get("username")
+                        password = results[0].get("password")
                 elif type == 'ssh':
                     mysql = SshBruter(host, ufile, pfile)
                     results = mysql.run()
-                    username = results[0].get("username")
-                    password = results[0].get("password")
+                    if results:
+                        username = results[0].get("username")
+                        password = results[0].get("password")
                 elif type == 'ftp':
                     mysql = FtpBruter(host, ufile, pfile)
                     results = mysql.run()
-                    username = results[0].get("username")
-                    password = results[0].get("password")
+                    if results:
+                        username = results[0].get("username")
+                        password = results[0].get("password")
             else:
                 message = "参数错误"
                 render_template("index.html", message=message, form=myForm)
-            return render_template("sucess.html", username=username, password=password)
+            return render_template("index.html",message=message, username=username, password=password,form=myForm)
         else:
             print("type must be ssh or ftp or mysql")
         return render_template("index.html", message=message, form=myForm)
     else:
-        message = "Failed Login"
+        message = "请输入参数"
         return render_template('index.html', message=message, form=myForm)
 
 
