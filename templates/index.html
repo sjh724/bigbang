@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <title>Document</title>
 </head>
-<body>
-<div align="center" >
-    <h2>User Management</h2>
+<body background="static/image/background.jpg">
+<div align="center" class="home">
+    <h2>Big Ban</h2>
     {% if message %} {{ message }} {% endif %}
-    <form method="POST">
-        地址:{{ form.host }}
-        <br>
-        类型:{{ form.type }}
+    <form method="POST" class="form">
+        地 &nbsp;&nbsp;&nbsp;址:{{ form.host }}
+        <br class="form-br">
+        类 &nbsp;&nbsp;&nbsp;型:{{ form.type }}
         <br>
         <input class="submit" type="submit" value="Submit">
     </form>
@@ -20,5 +20,24 @@
 </html>
 
 <style>
-    .submit { background: #ffffff}
+    .home {
+        margin: 200px;
+        font-family: Verdana, sans-serif;
+        line-height: 250%;
+    }
+    .form-br {
+        height: 20px;
+        width: 80px;
+        margin: fill;
+        padding: 12px;
+        border: black;
+        margin:4px 0; border:0;
+
+    }
+    .form {
+        margin: fill;
+        padding: 12px;
+        border: black;
+    }
+    .submit { background: aquamarine}
 </style>
