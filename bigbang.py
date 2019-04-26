@@ -92,7 +92,7 @@ class SshBruter():
             self.is_exit = True
             print("Exit the program...")
         print("Waiting...")
-        time.sleep(5)
+        time.sleep(1)
 
         self.show_result(self.host, self.result)
         finishetime = time.time()
@@ -176,7 +176,7 @@ class FtpBruter():
             self.is_exit = True
             print("Exit the program...")
         print("Waiting...")
-        time.sleep(5)
+        time.sleep(1)
 
         self.show_result(self.host, self.result)
         finishetime = time.time()
