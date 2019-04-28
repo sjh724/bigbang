@@ -1,37 +1,36 @@
+# -*- coding:utf-8 -*-
 import os
 
-# __file__ refers to the file settings.py
-APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
+APP_ROOT = os.path.dirname(os.path.abspath(__file__))  # refers to application_top
 APP_STATIC_TXT = os.path.join(APP_ROOT, 'static/txt')
 
-class config:
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'this is a secret string'
-    SQLALCHEMY_TRACK_MODIFICATIONS = True
-    CACHE_TYPE = 'simple'
 
-    # @staticmethod
-    # def init_app(app):
-    #     pass
+class Config(object):
+    SECRET_KEY = "Ay98Cct2oNSlnHDdTl8"
+    SQLALCHEMY_COMMIT_ON_TEARDOWN = True
+    @staticmethod
+    def init_app(app):
+        pass
+
+class LastConfig(Config):
+    '''
+        调试
+        连接数据库
+    '''
+    DEBUG = True
+    #SQLALCHEMY_ECHO = True
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:root@localhost:3306/test_one"
 
 
-# class DevelopmentConfig(config):
-#     DEBUG = True
-#     CACHE_TYPE = 'simple'
-#     SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:root@localhost:3306/db_flask"
-#
-#
-# class TestingConfig(config):
-#     TESTING = True
-#     SQLALCHEMY_DATABASE_URI = ""
-#
-#
-# class ProductionConfig(config):
-#     SQLALCHEMY_DATABASE_URI = ""
-#
-#
-# config = {
-#     'development': DevelopmentConfig,
-#     'testing': TestingConfig,
-#     'production': ProductionConfig,
-#     'default': DevelopmentConfig
-# }
+class TestConfig(Config):
+    '''
+        测试数据库
+        调试
+        连接数据库
+    '''
+    DEBUG = True
+    SQLALCHEMY_ECHO = True
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://lincox:655334linkong@localhost:3306/test_data"
+
+
+config = {'default':LastConfig, 'test':TestConfig}
