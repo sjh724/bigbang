@@ -21,7 +21,12 @@ class Url(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True)
 
-
+class Record(db.Model):
+    __tablename__ = 'record'
+    id = db.Column(db.Integer, primary_key=True)
+    host = db.Column(db.String(64), unique=True)
+    statue = db.Column(db.String(64))
+    date = db.Column(db.DateTime(), server_default=db.func.current_timestamp())
 
 class Role(db.Model):
     __tablename__ = 'roles'

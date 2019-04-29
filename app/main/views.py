@@ -1,8 +1,11 @@
+import datetime
 from flask import request, render_template
 from flask_login import login_required
 from wtforms import Form, StringField, validators
-from app.main.bigbang import MysqlBruter, FtpBruter, SshBruter, LoginBruter
+from app.main.bigbang import LoginBruter
+from app.models import Record
 from . import main
+from .. import db
 
 
 @main.route('/admin')
@@ -25,7 +28,6 @@ def userinfo():
 
 class LoginForm(Form):
     host = StringField("host", [validators.data_required()])
-    type = StringField("type", [validators.data_required()])
     cache_translations = True
 
 
@@ -43,11 +45,11 @@ def bigBang():
     print(request.method)
     username = ''
     password = ''
+    statue = False
     if request.method == 'POST':
         message = "爆破失败"
-        if myForm.host.data and myForm.type.data and myForm.validate():
+        if myForm.host.data and myForm.validate():
             host = myForm.host.data
-            type = myForm.type.data
             ufile = "username.txt"
             pfile = "password.txt"
             login = LoginBruter(host,ufile,pfile)
@@ -55,34 +57,13 @@ def bigBang():
             if results:
                 username = results[0].get("username")
                 password = results[0].get("password")
-            # if type == 'mysql':
-            #     mysql = MysqlBruter(host, ufile, pfile)
-            #     results = mysql.run()
-            #     if results:
-            #         username = results[0].get("username")
-            #         password = results[0].get("password")
-            # elif type == 'ssh':
-            #     mysql = SshBruter(host, ufile, pfile)
-            #     results = mysql.run()
-            #     if results:
-            #         username = results[0].get("username")
-            #         password = results[0].get("password")
-            # elif type == 'ftp':
-            #     mysql = FtpBruter(host, ufile, pfile)
-            #     results = mysql.run()
-            #     if results:
-            #         username = results[0].get("username")
-            #         password = results[0].get("password")
-            # else:
-            #     message = "参数错误"
-            if username and password:
                 message = "爆破成功"
-                # return render_template("sucess.html", message=message, username=username, password=password,
-                #                        form=myForm)
-            # else:
-            #     render_template("sucess.html", message=message, form=myForm)
+                statue = True
         else:
             message = "type must be ssh or ftp or mysql"
     else:
         message = "请输入参数"
+    record = Record(host=myForm.host.data,statue=statue)
+    db.session.add(record)
     return render_template('sucess.html', message=message, username=username, password=password, form=myForm)
+
