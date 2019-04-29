@@ -40,12 +40,13 @@ def index():
 
 
 @main.route("/bigbang", methods=['GET', 'POST'])
+@login_required
 def bigBang():
     myForm = LoginForm(request.form)
     print(request.method)
     username = ''
     password = ''
-    statue = False
+    statue = '失败'
     if request.method == 'POST':
         message = "爆破失败"
         if myForm.host.data and myForm.validate():
@@ -58,7 +59,7 @@ def bigBang():
                 username = results[0].get("username")
                 password = results[0].get("password")
                 message = "爆破成功"
-                statue = True
+                statue = '成功'
         else:
             message = "type must be ssh or ftp or mysql"
     else:
@@ -68,6 +69,7 @@ def bigBang():
     return render_template('sucess.html', message=message, username=username, password=password, form=myForm)
 
 @main.route("/recode",methods=['GET'])
+@login_required
 def getRecode():
     data = Record.query.all()
     return render_template('recode.html', data =data)

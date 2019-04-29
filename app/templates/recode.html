@@ -15,12 +15,14 @@
 {#        <h1>作者:{{author.name}}</h1>#}
         <table align="center" class="hovertable">
             <thread>
+                <th>序号</th>
                 <th>host</th>
                 <th>状态</th>
                 <th>时间</th>
             </thread>
             {%for f in data%}
             <tr>
+                <td>{{ f.id }}</td>
                 <td>{{f.host}}</td>
                 <td>{{f.statue}}</td>
                 <td>{{f.date}}</td>
@@ -33,6 +35,7 @@
 <style type="text/css">
 table.hovertable {
     font-family: verdana,arial,sans-serif;
+    width: 90%;
     font-size:11px;
     color:#333333;
     border-width: 1px;

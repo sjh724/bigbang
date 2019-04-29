@@ -302,6 +302,8 @@ class LoginBruter():
                 headers = {'Content-Type': 'application/json'}
                 url = self.host
                 r = requests.post(url=url, headers=headers, data=json.dumps(data))
+                print('==================================================')
+                print(r)
                 if r.status_code == 200:
                     s = "[OK] %s:%s" % (name, pwd)
                     print(s)
