@@ -3,7 +3,8 @@ import socket
 import threading
 import time
 from ftplib import FTP
-
+import requests
+import json
 import MySQLdb
 import os
 import paramiko
@@ -220,6 +221,91 @@ class MysqlBruter():
                 s = "[OK] %s:%s" % (name, pwd)
                 print(s)
                 self.result.append({"username": name, "password": pwd})
+            except socket.timeout:
+                self.show_log(self.host, "Timeout")
+                self.qlist.put(name + ':' + pwd)
+                time.sleep(1)
+            except Exception as e:
+                error = "[Error] %s:%s" % (name, pwd)
+                print(error)
+                pass
+
+    def show_result(self, lname, rlist):
+        if rlist:
+            print("-------------------------------------------------------------------------------------")
+            for x in rlist:
+                print(x)
+            return {lname: rlist}
+        else:
+            print("not found...")
+
+    def run(self):
+        self.get_queue()
+        starttime = time.time()
+
+        threads = []
+        for x in range(1, self.threadnum + 1):
+            t = threading.Thread(target=self.thread)
+            threads.append(t)
+            t.setDaemon(True)  # 主线程完成后不管子线程有没有结束，直接退出
+            t.start()
+
+        try:
+            while True:
+                if self.qlist.empty():
+                    break
+                else:
+                    time.sleep(1)
+        except KeyboardInterrupt:
+            self.is_exit = True
+            print("Exit the program...")
+        print("Waiting...")
+
+
+        self.show_result(self.host, self.result)
+        finishetime = time.time()
+        print("Used time: %f" % (finishetime - starttime))
+        return self.result
+
+
+class LoginBruter():
+    def __init__(self, host, userfile, passfile):
+        self.host = host
+        self.userfile = userfile
+        self.passfile = passfile
+        self.threadnum = 10
+        self.timeout = 10
+        self.result = []
+        self.qlist = queue.Queue()
+        print(self.host, self.userfile, self.passfile, self.threadnum)
+
+    def get_queue(self):
+        with open(os.path.join(APP_STATIC_TXT, self.userfile)) as f:
+            ulines = f.readlines()
+        with open(os.path.join(APP_STATIC_TXT, self.passfile)) as f:
+            plines = f.readlines()
+
+        for name in ulines:
+            for pwd in plines:
+                name = name.strip()
+                pwd = pwd.strip()
+                self.qlist.put(name + ':' + pwd)
+
+    def thread(self):
+        while not self.qlist.empty():
+            name, pwd = self.qlist.get().split(':')
+            try:
+                data = {
+                    'username': name,
+                    'password': pwd
+                }
+                headers = {'Content-Type': 'application/json'}
+                url = self.host
+                r = requests.post(url=url, headers=headers, data=json.dumps(data))
+                if r.status_code == 200:
+                    s = "[OK] %s:%s" % (name, pwd)
+                    print(s)
+                    self.result.append({"username": name, "password": pwd})
             except socket.timeout:
                 self.show_log(self.host, "Timeout")
                 self.qlist.put(name + ':' + pwd)

@@ -1,7 +1,7 @@
 from flask import request, render_template
 from flask_login import login_required
 from wtforms import Form, StringField, validators
-from app.main.bigbang import MysqlBruter, FtpBruter, SshBruter
+from app.main.bigbang import MysqlBruter, FtpBruter, SshBruter, LoginBruter
 from . import main
 
 
@@ -41,6 +41,8 @@ def index():
 def bigBang():
     myForm = LoginForm(request.form)
     print(request.method)
+    username = ''
+    password = ''
     if request.method == 'POST':
         message = "爆破失败"
         if myForm.host.data and myForm.type.data and myForm.validate():
@@ -48,29 +50,31 @@ def bigBang():
             type = myForm.type.data
             ufile = "username.txt"
             pfile = "password.txt"
-            username = ''
-            password = ''
-
-            if type == 'mysql':
-                mysql = MysqlBruter(host, ufile, pfile)
-                results = mysql.run()
-                if results:
-                    username = results[0].get("username")
-                    password = results[0].get("password")
-            elif type == 'ssh':
-                mysql = SshBruter(host, ufile, pfile)
-                results = mysql.run()
-                if results:
-                    username = results[0].get("username")
-                    password = results[0].get("password")
-            elif type == 'ftp':
-                mysql = FtpBruter(host, ufile, pfile)
-                results = mysql.run()
-                if results:
-                    username = results[0].get("username")
-                    password = results[0].get("password")
-            else:
-                message = "参数错误"
+            login = LoginBruter(host,ufile,pfile)
+            results = login.run()
+            if results:
+                username = results[0].get("username")
+                password = results[0].get("password")
+            # if type == 'mysql':
+            #     mysql = MysqlBruter(host, ufile, pfile)
+            #     results = mysql.run()
+            #     if results:
+            #         username = results[0].get("username")
+            #         password = results[0].get("password")
+            # elif type == 'ssh':
+            #     mysql = SshBruter(host, ufile, pfile)
+            #     results = mysql.run()
+            #     if results:
+            #         username = results[0].get("username")
+            #         password = results[0].get("password")
+            # elif type == 'ftp':
+            #     mysql = FtpBruter(host, ufile, pfile)
+            #     results = mysql.run()
+            #     if results:
+            #         username = results[0].get("username")
+            #         password = results[0].get("password")
+            # else:
+            #     message = "参数错误"
             if username and password:
                 message = "爆破成功"
                 # return render_template("sucess.html", message=message, username=username, password=password,
