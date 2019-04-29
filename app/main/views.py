@@ -67,3 +67,7 @@ def bigBang():
     db.session.add(record)
     return render_template('sucess.html', message=message, username=username, password=password, form=myForm)
 
+@main.route("/recode",methods=['GET'])
+def getRecode():
+    data = Record.query.all()
+    return render_template('recode.html', data =data)

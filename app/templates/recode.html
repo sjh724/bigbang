@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+
+{% block title %}测试{% endblock %}
+
+{% block page_content %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <dvi>
+{#        <h1>作者:{{author.name}}</h1>#}
+        <table align="center" class="hovertable">
+            <thread>
+                <th>host</th>
+                <th>状态</th>
+                <th>时间</th>
+            </thread>
+            {%for f in data%}
+            <tr>
+                <td>{{f.host}}</td>
+                <td>{{f.statue}}</td>
+                <td>{{f.date}}</td>
+            </tr>
+            {%endfor%}
+        </table>
+    </dvi>
+</body>
+</html>
+<style type="text/css">
+table.hovertable {
+    font-family: verdana,arial,sans-serif;
+    font-size:11px;
+    color:#333333;
+    border-width: 1px;
+    border-color: #999999;
+    border-collapse: collapse;
+}
+table.hovertable th {
+    background-color:#c3dde0;
+    border-width: 1px;
+    padding: 8px;
+    border-style: solid;
+    border-color: #a9c6c9;
+}
+table.hovertable tr {
+    background-color:#d4e3e5;
+}
+table.hovertable td {
+    border-width: 1px;
+    padding: 8px;
+    border-style: solid;
+    border-color: #a9c6c9;
+}
+</style>
+
+{% endblock %}
